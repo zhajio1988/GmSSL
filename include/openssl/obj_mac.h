@@ -569,6 +569,16 @@
 #define NID_sha224WithRSAEncryption             671
 #define OBJ_sha224WithRSAEncryption             OBJ_pkcs1,14L
 
+#define SN_sha512t224WithRSAEncryption          "RSA-SHA512T224"
+#define LN_sha512t224WithRSAEncryption          "sha512t224WithRSAEncryption"
+#define NID_sha512t224WithRSAEncryption         1200
+#define OBJ_sha512t224WithRSAEncryption         OBJ_pkcs1,15L
+
+#define SN_sha512t256WithRSAEncryption          "RSA-SHA512T256"
+#define LN_sha512t256WithRSAEncryption          "sha512t256WithRSAEncryption"
+#define NID_sha512t256WithRSAEncryption         1201
+#define OBJ_sha512t256WithRSAEncryption         OBJ_pkcs1,16L
+
 #define SN_pkcs3                "pkcs3"
 #define NID_pkcs3               27
 #define OBJ_pkcs3               OBJ_pkcs,3L
@@ -2823,6 +2833,16 @@
 #define LN_sha224               "sha224"
 #define NID_sha224              675
 #define OBJ_sha224              OBJ_nist_hashalgs,4L
+
+#define SN_sha512t224           "SHA512T224"
+#define LN_sha512t224           "sha512t224"
+#define NID_sha512t224          1202
+#define OBJ_sha512t224          OBJ_nist_hashalgs,5L
+
+#define SN_sha512t256           "SHA512T256"
+#define LN_sha512t256           "sha512t256"
+#define NID_sha512t256          1203
+#define OBJ_sha512t256          OBJ_nist_hashalgs,6L
 
 #define OBJ_dsa_with_sha2               OBJ_nistAlgorithms,3L
 

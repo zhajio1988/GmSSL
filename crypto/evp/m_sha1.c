@@ -190,6 +190,16 @@ static int init512(EVP_MD_CTX *ctx)
     return SHA512_Init(EVP_MD_CTX_md_data(ctx));
 }
 
+static int init512t224(EVP_MD_CTX *ctx)
+{
+    return SHA512T224_Init(EVP_MD_CTX_md_data(ctx));
+}
+
+static int init512t256(EVP_MD_CTX *ctx)
+{
+    return SHA512T256_Init(EVP_MD_CTX_md_data(ctx));
+}
+
 /* See comment in SHA224/256 section */
 static int update512(EVP_MD_CTX *ctx, const void *data, size_t count)
 {
@@ -237,6 +247,44 @@ static const EVP_MD sha512_md = {
 const EVP_MD *EVP_sha512(void)
 {
     return (&sha512_md);
+}
+
+static const EVP_MD sha512t224_md = {
+    NID_sha512t224,
+    NID_sha512t224WithRSAEncryption,
+    SHA512T224_DIGEST_LENGTH,
+    EVP_MD_FLAG_DIGALGID_ABSENT,
+    init512t224,
+    update512,
+    final512,
+    NULL,
+    NULL,
+    SHA512_CBLOCK,
+    sizeof(EVP_MD *) + sizeof(SHA512_CTX),
+};
+
+const EVP_MD *EVP_sha512t224(void)
+{
+    return (&sha512t224_md);
+}
+
+static const EVP_MD sha512t256_md = {
+    NID_sha512t256,
+    NID_sha512t256WithRSAEncryption,
+    SHA512T256_DIGEST_LENGTH,
+    EVP_MD_FLAG_DIGALGID_ABSENT,
+    init512t256,
+    update512,
+    final512,
+    NULL,
+    NULL,
+    SHA512_CBLOCK,
+    sizeof(EVP_MD *) + sizeof(SHA512_CTX),
+};
+
+const EVP_MD *EVP_sha512t256(void)
+{
+    return (&sha512t256_md);
 }
 # endif
 #endif

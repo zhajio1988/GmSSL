@@ -108,6 +108,8 @@ DEFINE_RUN_ONCE_STATIC(ossl_init_ssl_base)
 # ifndef OPENSSL_NO_SHA512
     EVP_add_digest(EVP_sha384());
     EVP_add_digest(EVP_sha512());
+    EVP_add_digest(EVP_sha512t224());
+    EVP_add_digest(EVP_sha512t256());
 # endif
 #endif
 #ifndef OPENSSL_NO_COMP

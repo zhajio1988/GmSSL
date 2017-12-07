@@ -69,6 +69,8 @@ void SHA256_Transform(SHA256_CTX *c, const unsigned char *data);
 # define SHA256_DIGEST_LENGTH    32
 # define SHA384_DIGEST_LENGTH    48
 # define SHA512_DIGEST_LENGTH    64
+# define SHA512T224_DIGEST_LENGTH    28
+# define SHA512T256_DIGEST_LENGTH    32
 
 /*
  * Unlike 32-bit digest algorithms, SHA-512 *relies* on SHA_LONG64

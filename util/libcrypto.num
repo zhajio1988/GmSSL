@@ -5012,3 +5012,5 @@ SKF_PrintDevInfo                        4852	1_1_0d	EXIST::FUNCTION:SKF
 speck_set_encrypt_key32                 4853	1_1_0d	EXIST::FUNCTION:SPECK
 BIO_nread0                              4854	1_1_0d	EXIST::FUNCTION:
 SM9_extract_public_key                  4855	1_1_0d	EXIST::FUNCTION:SM9
+EVP_sha512t224                          4856	1_1_0d	EXIST::FUNCTION:
+EVP_sha512t256                          4857	1_1_0d	EXIST::FUNCTION:

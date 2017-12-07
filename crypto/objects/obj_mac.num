@@ -1197,3 +1197,7 @@ bwips		1196
 wapi_crypto		1197
 wapi_ec		1198
 wapi_ecdsa192_sha256		1199
+sha512t224WithRSAEncryption		1200
+sha512t256WithRSAEncryption		1201
+sha512t224		1202
+sha512t256		1203

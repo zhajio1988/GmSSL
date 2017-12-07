@@ -129,6 +129,8 @@ IMPLEMENT_X963_KDF(sha256)
 # ifndef OPENSSL_NO_SHA512
 IMPLEMENT_X963_KDF(sha384)
 IMPLEMENT_X963_KDF(sha512)
+IMPLEMENT_X963_KDF(sha512t224)
+IMPLEMENT_X963_KDF(sha512t256)
 # endif
 #endif
 #ifndef OPENSSL_NO_MDC2
@@ -170,6 +172,10 @@ KDF_FUNC KDF_get_x9_63(const EVP_MD *md)
 		return x963_sha384kdf;
 	case NID_sha512:
 		return x963_sha512kdf;
+	case NID_sha512t224:
+		return x963_sha512t224kdf;
+	case NID_sha512t256:
+		return x963_sha512t256kdf;
 # endif
 #endif
 #ifndef OPENSSL_NO_MDC2

@@ -96,6 +96,42 @@ int SHA512_Init(SHA512_CTX *c)
     return 1;
 }
 
+int SHA512T224_Init(SHA512_CTX *c)
+{
+    c->h[0] = U64(0x8c3d37c819544da2);
+    c->h[1] = U64(0x73e1996689dcd4d6);
+    c->h[2] = U64(0x1dfab7ae32ff9c82);
+    c->h[3] = U64(0x679dd514582f9fcf);
+    c->h[4] = U64(0x0f6d2b697bd44da8);
+    c->h[5] = U64(0x77e36f7304c48942);
+    c->h[6] = U64(0x3f9d85a86a1d36c8);
+    c->h[7] = U64(0x1112e6ad91d692a1);
+
+    c->Nl = 0;
+    c->Nh = 0;
+    c->num = 0;
+    c->md_len = SHA512T224_DIGEST_LENGTH;
+    return 1;
+}
+
+int SHA512T256_Init(SHA512_CTX *c)
+{
+    c->h[0] = U64(0x22312194fc2bf72c);
+    c->h[1] = U64(0x9f555fa3c84c64c2);
+    c->h[2] = U64(0x2393b86b6f53b151);
+    c->h[3] = U64(0x963877195940eabd);
+    c->h[4] = U64(0x96283ee2a88effe3);
+    c->h[5] = U64(0xbe5e1e2553863992);
+    c->h[6] = U64(0x2b0199fc2c85b8aa);
+    c->h[7] = U64(0x0eb72ddc81c52ca2);
+
+    c->Nl = 0;
+    c->Nh = 0;
+    c->num = 0;
+    c->md_len = SHA512T256_DIGEST_LENGTH;
+    return 1;
+}
+
 #ifndef SHA512_ASM
 static
 #endif
@@ -142,8 +178,44 @@ int SHA512_Final(unsigned char *md, SHA512_CTX *c)
     if (md == 0)
         return 0;
 
+    int remainder = c->md_len % 8;
+    int quotient = c->md_len / 8;
     switch (c->md_len) {
         /* Let compiler decide if it's appropriate to unroll... */
+    case SHA512T224_DIGEST_LENGTH:
+        for (n = 0; n < SHA512T224_DIGEST_LENGTH / 8; n++) {
+            SHA_LONG64 t = c->h[n];
+
+            *(md++) = (unsigned char)(t >> 56);
+            *(md++) = (unsigned char)(t >> 48);
+            *(md++) = (unsigned char)(t >> 40);
+            *(md++) = (unsigned char)(t >> 32);
+            *(md++) = (unsigned char)(t >> 24);
+            *(md++) = (unsigned char)(t >> 16);
+            *(md++) = (unsigned char)(t >> 8);
+            *(md++) = (unsigned char)(t);
+        }
+        for(n = 0; n < remainder; n++){
+            *(md++) = (unsigned char)(c->h[quotient] >> (56 - n*8));
+        }
+        break;
+    case SHA512T256_DIGEST_LENGTH:
+        for (n = 0; n < SHA512T256_DIGEST_LENGTH / 8; n++) {
+            SHA_LONG64 t = c->h[n];
+
+            *(md++) = (unsigned char)(t >> 56);
+            *(md++) = (unsigned char)(t >> 48);
+            *(md++) = (unsigned char)(t >> 40);
+            *(md++) = (unsigned char)(t >> 32);
+            *(md++) = (unsigned char)(t >> 24);
+            *(md++) = (unsigned char)(t >> 16);
+            *(md++) = (unsigned char)(t >> 8);
+            *(md++) = (unsigned char)(t);
+        }
+        for(n = 0; n < remainder; n++){
+            *(md++) = (unsigned char)(c->h[quotient] >> (56 - n*8));
+        }
+        break;        
     case SHA384_DIGEST_LENGTH:
         for (n = 0; n < SHA384_DIGEST_LENGTH / 8; n++) {
             SHA_LONG64 t = c->h[n];
@@ -269,6 +341,34 @@ unsigned char *SHA512(const unsigned char *d, size_t n, unsigned char *md)
     if (md == NULL)
         md = m;
     SHA512_Init(&c);
+    SHA512_Update(&c, d, n);
+    SHA512_Final(md, &c);
+    OPENSSL_cleanse(&c, sizeof(c));
+    return (md);
+}
+
+unsigned char *SHA512T224(const unsigned char *d, size_t n, unsigned char *md)
+{
+    SHA512_CTX c;
+    static unsigned char m[SHA512T224_DIGEST_LENGTH];
+
+    if (md == NULL)
+        md = m;
+    SHA512T224_Init(&c);
+    SHA512_Update(&c, d, n);
+    SHA512_Final(md, &c);
+    OPENSSL_cleanse(&c, sizeof(c));
+    return (md);
+}
+
+unsigned char *SHA512T256(const unsigned char *d, size_t n, unsigned char *md)
+{
+    SHA512_CTX c;
+    static unsigned char m[SHA512T256_DIGEST_LENGTH];
+
+    if (md == NULL)
+        md = m;
+    SHA512T256_Init(&c);
     SHA512_Update(&c, d, n);
     SHA512_Final(md, &c);
     OPENSSL_cleanse(&c, sizeof(c));

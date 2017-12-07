@@ -75,6 +75,36 @@ static const unsigned char app_d3[SHA384_DIGEST_LENGTH] = {
     0xae, 0x97, 0xdd, 0xd8, 0x7f, 0x3d, 0x89, 0x85
 };
 
+static const unsigned char app_e1[SHA512T224_DIGEST_LENGTH] = {
+    0x46, 0x34, 0x27, 0x0f, 0x70, 0x7b, 0x6a, 0x54, 
+    0xda, 0xae, 0x75, 0x30, 0x46, 0x08, 0x42, 0xe2, 
+    0x0e, 0x37, 0xed, 0x26, 0x5c, 0xee, 0xe9, 0xa4, 
+    0x3e, 0x89, 0x24, 0xaa  
+};
+
+static const unsigned char app_e2[SHA512T224_DIGEST_LENGTH] = {
+    0x23, 0xfe, 0xc5, 0xbb, 0x94, 0xd6, 0x0b, 0x23, 
+    0x30, 0x81, 0x92, 0x64, 0x0b, 0x0c, 0x45, 0x33, 
+    0x35, 0xd6, 0x64, 0x73, 0x4f, 0xe4, 0x0e, 0x72, 
+    0x68, 0x67, 0x4a, 0xf9
+};
+
+static const unsigned char app_f1[SHA512T256_DIGEST_LENGTH] = {
+    0x53, 0x04, 0x8e, 0x26, 0x81, 0x94, 0x1e, 0xf9, 
+    0x9b, 0x2e, 0x29, 0xb7, 0x6b, 0x4c, 0x7d, 0xab, 
+    0xe4, 0xc2, 0xd0, 0xc6, 0x34, 0xfc, 0x6d, 0x46, 
+    0xe0, 0xe2, 0xf1, 0x31, 0x07, 0xe7, 0xaf, 0x23
+};
+
+static const unsigned char app_f2[SHA512T256_DIGEST_LENGTH] = {
+    0x39, 0x28, 0xe1, 0x84, 0xfb, 0x86, 0x90, 0xf8, 
+    0x40, 0xda, 0x39, 0x88, 0x12, 0x1d, 0x31, 0xbe, 
+    0x65, 0xcb, 0x9d, 0x3e, 0xf8, 0x3e, 0xe6, 0x14, 
+    0x6f, 0xea, 0xc8, 0x61, 0xe1, 0x9b, 0x56, 0x3a
+};
+
+
+
 int main(int argc, char **argv)
 {
     unsigned char md[SHA512_DIGEST_LENGTH];
@@ -186,6 +216,59 @@ int main(int argc, char **argv)
     } else
         fprintf(stdout, ".");
     fflush(stdout);
+
+    fprintf(stdout, "Testing SHA-512t224 ");
+    printf("Testing SHA-512t224\n");
+
+    if (!EVP_Digest("abc", 3, md, NULL, EVP_sha512t224(), NULL))
+        goto err;
+    if (memcmp(md, app_e1, sizeof(app_e1))) {
+        fflush(stdout);
+        fprintf(stderr, "\nTEST 1 of 2 failed.\n");
+        printf("\nTEST 1 of 2 failed.\n");
+        return 1;
+    } else
+        fprintf(stdout, ".");
+    fflush(stdout);
+
+    if (!EVP_Digest("abcdefgh" "bcdefghi" "cdefghij" "defghijk"
+                    "efghijkl" "fghijklm" "ghijklmn" "hijklmno"
+                    "ijklmnop" "jklmnopq" "klmnopqr" "lmnopqrs"
+                    "mnopqrst" "nopqrstu", 112, md, NULL, EVP_sha512t224(), NULL))
+        goto err;
+    if (memcmp(md, app_e2, sizeof(app_e2))) {
+        fflush(stdout);
+        fprintf(stderr, "\nTEST 2 of 2 failed.\n");
+        printf("\nTEST 2 of 2 failed.\n");
+        return 1;
+    } else
+        fprintf(stdout, ".");
+    fflush(stdout);
+
+    fprintf(stdout, "Testing SHA-512t256 ");
+
+    if (!EVP_Digest("abc", 3, md, NULL, EVP_sha512t256(), NULL))
+        goto err;
+    if (memcmp(md, app_f1, sizeof(app_f1))) {
+        fflush(stdout);
+        fprintf(stderr, "\nTEST 1 of 2 failed.\n");
+        return 1;
+    } else
+        fprintf(stdout, ".");
+    fflush(stdout);
+
+    if (!EVP_Digest("abcdefgh" "bcdefghi" "cdefghij" "defghijk"
+                    "efghijkl" "fghijklm" "ghijklmn" "hijklmno"
+                    "ijklmnop" "jklmnopq" "klmnopqr" "lmnopqrs"
+                    "mnopqrst" "nopqrstu", 112, md, NULL, EVP_sha512t256(), NULL))
+        goto err;
+    if (memcmp(md, app_f2, sizeof(app_f2))) {
+        fflush(stdout);
+        fprintf(stderr, "\nTEST 2 of 2 failed.\n");
+        return 1;
+    } else
+        fprintf(stdout, ".");
+    fflush(stdout);    
 
     fprintf(stdout, " passed.\n");
     fflush(stdout);
