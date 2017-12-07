@@ -148,4 +148,28 @@ Self-signed SM2 certificate generation:
 ```sh
 $ gmssl req -new -x509 -key skey.pem -out cert.pem
 ```
+Add SHA-512/224 SHA-512/256 digest algm
 
+SHA-512/224 digest generation:
+
+```
+$ echo -n "abc" | gmssl sha512t224
+(stdin)= 4634270f707b6a54daae7530460842e20e37ed265ceee9a43e8924aa 
+$ echo -n "abc" | gmssl dgst -sha512t224
+(stdin)= 4634270f707b6a54daae7530460842e20e37ed265ceee9a43e8924aa 
+```
+SHA-512/256 digest generation:
+
+```
+$ echo -n "abc" | gmssl sha512t256
+(stdin)= 4634270f707b6a54daae7530460842e20e37ed265ceee9a43e8924aa 
+$ echo -n "abc" | gmssl dgst -sha512t256
+(stdin)= 4634270f707b6a54daae7530460842e20e37ed265ceee9a43e8924aa 
+```
+can also generate signature use below command:
+
+```
+$ gmssl genrsa -out privatekey.pem 2048
+$ echo -n "abc" | gmssl dgst -sha512t224 -sign privatekey.pem -hex
+(stdin)= 34936983a9b9b50baa34e49fd846a90e556081e41b4386912bc796d1b092dbb1f8cc03cafe1fce9a0d1eef85597aefb8b16cea33042c0c531eb9a2d852185ae521ae900448a1447cd902919d4ac612511701ea074b7ca98c51d977b7afc6b91565683e58ae92c790096c3a2d2041c0e4bd11674ce2af7126eb0b705bd2c434bca7672bfacdb5a729156ac1ff81e773d5ccf046007a72a72b9b03c79ef4a675967560890f2c60a31a592dbbc70a39f8e47d960f1f01fc2e1f9e54704bb1d6cffa59449a954aa892eb43fe67bd914bfd70ca24eaabff66e6c8c3dba4e2496ebbeb4d01e25293027b757f62c0ec23ce376cfd33e9505f6d83beddf27aa301f89b21 
+```
